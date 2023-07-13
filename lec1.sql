@@ -159,9 +159,60 @@ from emp
 order by deptid desc,ename 
 limit 5;
 
-select salary from emp order by salary desc limit 1 offset 2 ;
+select salary from emp order by salary desc limit 1 offset 1 ;
+
+select deptid,count(empid) as count from emp group by deptid;
+
+select deptid,sum(salary) from emp group by deptid;
+
+select deptid, salary, count(salary)
+from emp
+where salary in (45000.90,60000)
+group by deptid , salary;
+
+show index from dept;
+
+create index deptidind on dept(deptid);
+
+drop index deptidind on dept
 
 
+select * from emp;
+
+update emp
+set salary = 50000
+where empid = 8;
+
+
+alter table emp 
+add location varchar(20)
+
+alter table emp 
+drop location 
+
+alter table emp 
+rename column location to city
+
+desc emp
+
+alter table emp
+modify column city char(20)
+
+create table dept(
+deptid varchar(10) primary key,
+dname varchar(20),
+location varchar(20)
+)
+
+
+create table emp(
+empid varchar(10) primary key,
+ename varchar(40) not null,
+job varchar(15) not null,
+salary numeric(8,2), 
+deptid varchar(10),
+foreign key (deptid) references dept(deptid)  
+)
 
 
 
