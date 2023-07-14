@@ -214,7 +214,81 @@ deptid varchar(10),
 foreign key (deptid) references dept(deptid)  
 )
 
+-- creating a view of all emp from dept id 1 and 2
 
+create view emp12 as
+select * from emp where deptid in(1,2);
+
+
+select * from emp12;
+
+-- eplaceing a view of all emp from dept id 3 and 4
+create or replace view emp12 as
+select * from emp where deptid in(3,4);
+
+-- drop the view
+drop view emp12;
+
+create table student(
+rollno varchar(10) primary key,
+sname varchar(10), 
+age int,
+city varchar(10)
+);
+
+create table subject(
+subid varchar(10),
+rollno varchar(10)
+);
+
+drop table student;
+drop table subject;
+
+insert into subject values('1','1');
+insert into subject values('3','2');
+insert into subject values('2','3');
+insert into subject values('2','4');
+insert into subject values('1','5');
+insert into subject values('3','6');
+insert into subject values('4',null);
+insert into subject values('5',null);
+
+insert into student values('1','jay',12,'mumbai');
+insert into student values('2','ajay',12,'surat');
+insert into student values('3','vjay',10,'nagpur');
+insert into student values('4','sanjay',11,'jaipur');
+insert into student values('5','jaya',13,'mumbai');
+insert into student values('6','jayesh',12,'kalyan');
+insert into student values('7','vijaya',13,'goa');
+insert into student values('8','jaywanti',11,'bangaluru');
+
+select * from student;
+
+select * from subject;
+
+select *
+from student full join subject
+
+
+
+select subject.subid, student.sname, student.age
+from subject inner join student
+where subject.rollno = student.rollno;
+
+select b.sname, a.subid as courseid
+from student as b inner join subject as a 
+on b.rollno = a.rollno;
+
+select *
+from student as b left join subject as a 
+on b.rollno = a.rollno;
+
+select b.sname, a.subid
+from student as b right join subject as a 
+on b.rollno = a.rollno;
+
+select sname, subid
+from student full join subject;
 
 
 
