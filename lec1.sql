@@ -291,7 +291,85 @@ select sname, subid
 from student full join subject;
 
 
+select empid, salary,
+case
+when salary >= 40000 and salary <=50000 then 'Avg Salary'
+when salary > 50000 and salary <=60000 then 'High Salary'
+else 'not in the range or salary is null'
+end as sal_struct
+from emp;
 
+
+
+-- write a stored procedure to give me count of student with x no age which will be givenn as 
+-- input 
+
+delimiter &&
+create procedure findage(a int)
+begin
+select Count(rollno) as lesser from student where age < a;
+select Count(rollno) as equal from student where age = a;
+select Count(rollno) as higher from student where age > a;
+end
+&& delimiter ;
+
+call findage(11) ;
+
+drop procedure findage;
+
+delimiter &&
+create procedure findage(a int)
+begin
+select Count(rollno) as lesser from student where age < a;
+select Count(rollno) as equal from student where age = a;
+select Count(rollno) as higher from student where age > a;
+end
+&& delimiter ;
+
+-- write a query using subquery to get all emp info who has salary > 50000
+
+select * from emp 
+where empid in (select empid from emp  where salary > 50000)
+
+select * from emp 
+where salary = (select max(salary) from emp);
+
+select * from emp
+where empid in (select empid from emp where salary > 40000 and salary < 60000)
+
+
+
+
+select * from emp
+select * from dept
+
+-- write a query to get all emp from account dept;
+select * from emp 
+where deptid in (select deptid from dept where dname = 'account')
+
+select * 
+from emp inner join dept 
+on emp.deptid = dept.deptid 
+where dept.dname = 'account';
+
+
+
+select deptid from dept where dname ='account'
+
+select * from emp where deptid = (select deptid from dept where dname ='account')
+
+select * from emp 
+where exists 
+(select * from dept where dept.deptid = emp.deptid and dname = 'account');
+
+-- write a query to get all emp from account dept;
+select * from emp 
+where deptid in (select deptid from dept where dname = 'account')
+
+select * 
+from emp inner join dept 
+on emp.deptid = dept.deptid 
+where dept.dname = 'account';
 
 
 
