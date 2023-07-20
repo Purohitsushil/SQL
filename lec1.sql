@@ -1,24 +1,36 @@
+-- create DB
 create database class2; 
 
+-- selection of db
 use class2;
 
+-- create table command w/0 constrians 
 create table dept(
 deptid int(10),
 dname varchar(20),
 location varchar(30) 
 );
 
+-- Description of Table 
 desc dept;
 
+-- to get all table in current Db
+show tables;
+
+-- inserting values in Table 
+insert into dept values (1,'account','china');
 insert into dept values (1,'account','china');
 insert into dept values('2','Research','Delhi');
 insert into dept values('3','Sales','Ahmedabad');
 insert into dept values('4','Operation','Nagpur');
 
+-- get all the data from table
 select * from dept;
 
+-- use of as Alaises 
 select deptid as id,dname as departmentname from dept;
 
+-- get unique value of a single column distinct
 select distinct deptid from dept;
 
 select distinct location from dept;
@@ -26,12 +38,16 @@ select distinct location from dept;
 
 
 create table emp(
-empid varchar(10) primary key,
+empid varchar(10) primary key Auto_increment,
 ename varchar(40) not null,
 job varchar(15) not null,
 salary numeric(8,2), 
 deptid varchar(10)  
 );
+
+alter table emp
+auto_increment = 0;
+
 
 insert into emp values('1','jay','Accountant',50000.90,'1');
 insert into emp values('2','sushil','data engg',60000,'2');
@@ -112,15 +128,14 @@ from emp
 where not ename in ('jay','sushil');
 
 -- query to get detials of all emp sal between 50000 and 60000
-
 select *
 from emp
 where salary between 50000 and 60000;
 
+-- change name of the table
+alter table emp rename employee;
 
-select * from emp;
-
-
+-- like operator 
 select *
 from emp 
 where ename like '_jay';
@@ -130,37 +145,59 @@ from emp
 where job like '%data%';
 
 
+
+-- Minimum value from a column
 select min(salary) as 'min_sal' from emp;
 
+-- Maximum value from a column
 select max(salary) as 'max_sal' from emp;
 
+-- count value from a column
 select count(salary) from emp;
 select count(empid) from emp;
 
+-- sum value from a column
 select sum(salary) from emp;
 
+-- Average for a Column
 select avg(salary) from emp;
 
+-- perform calculation select function
 select sum(salary)/count(salary) from emp;
-
 select empid,ename,salary,salary+((10*salary)/100) as 'bonus' from emp;
 
+
+-- delete single entity from a table
 delete from emp where ename = 'suraj';
 
+-- remove safelock table (run this or else you will not be able to delete a record)
 set sql_safe_updates = 0;
 
+-- delete taBLE 
 drop table emp;
-select * from emp;
 
+-- DELETE ALL THE RECORDS 
 truncate table emp;
 
+-- SORTING 
 select * 
 from emp
 order by deptid desc,ename 
 limit 5;
 
+
+-- NO OF SPECIFIC ROW WITH LIMIT
+select * 
+from emp
+order by deptid desc,ename 
+limit 5;
+
+
+-- OMITING ROWS FROM THE START USING OFFSET
 select salary from emp order by salary desc limit 1 offset 1 ;
 
+
+-- MAKING GROUP OF VALUES IN A SINGLE COLUMN OR MUILTIPLES 
 select deptid,count(empid) as count from emp group by deptid;
 
 select deptid,sum(salary) from emp group by deptid;
@@ -170,41 +207,43 @@ from emp
 where salary in (45000.90,60000)
 group by deptid , salary;
 
+
+-- SHOW YOU INDEXS 
 show index from dept;
 
+-- CREATE INDEX FOR TABLE 
 create index deptidind on dept(deptid);
 
-drop index deptidind on dept
+-- DELETE THE INDEX
+drop index deptidind on dept;
 
-
-select * from emp;
-
+-- Update the records 
 update emp
 set salary = 50000
 where empid = 8;
 
+-- Example of Alter changes on the structure of table
+alter table emp 
+add location varchar(20);
 
 alter table emp 
-add location varchar(20)
+drop location ;
 
 alter table emp 
-drop location 
-
-alter table emp 
-rename column location to city
-
-desc emp
+rename column location to city;
 
 alter table emp
-modify column city char(20)
+modify column city char(20);
+
+
 
 create table dept(
 deptid varchar(10) primary key,
 dname varchar(20),
 location varchar(20)
-)
+);
 
-
+-- how to desc the foreign key
 create table emp(
 empid varchar(10) primary key,
 ename varchar(40) not null,
@@ -212,20 +251,16 @@ job varchar(15) not null,
 salary numeric(8,2), 
 deptid varchar(10),
 foreign key (deptid) references dept(deptid)  
-)
+);
+
 
 -- creating a view of all emp from dept id 1 and 2
-
 create view emp12 as
 select * from emp where deptid in(1,2);
 
-
-select * from emp12;
-
--- eplaceing a view of all emp from dept id 3 and 4
+-- replaceing a view of all emp from dept id 3 and 4
 create or replace view emp12 as
 select * from emp where deptid in(3,4);
-
 -- drop the view
 drop view emp12;
 
@@ -290,7 +325,7 @@ on b.rollno = a.rollno;
 select sname, subid
 from student full join subject;
 
-
+-- cases
 select empid, salary,
 case
 when salary >= 40000 and salary <=50000 then 'Avg Salary'
@@ -304,6 +339,7 @@ from emp;
 -- write a stored procedure to give me count of student with x no age which will be givenn as 
 -- input 
 
+-- Create a SP
 delimiter &&
 create procedure findage(a int)
 begin
@@ -313,8 +349,10 @@ select Count(rollno) as higher from student where age > a;
 end
 && delimiter ;
 
+
 call findage(11) ;
 
+-- Delete SP
 drop procedure findage;
 
 delimiter &&
@@ -329,23 +367,23 @@ end
 -- write a query using subquery to get all emp info who has salary > 50000
 
 select * from emp 
-where empid in (select empid from emp  where salary > 50000)
+where empid in (select empid from emp  where salary > 50000);
 
 select * from emp 
 where salary = (select max(salary) from emp);
 
 select * from emp
-where empid in (select empid from emp where salary > 40000 and salary < 60000)
+where empid in (select empid from emp where salary > 40000 and salary < 60000);
 
 
 
 
-select * from emp
-select * from dept
+select * from emp;
+select * from dept;
 
 -- write a query to get all emp from account dept;
 select * from emp 
-where deptid in (select deptid from dept where dname = 'account')
+where deptid in (select deptid from dept where dname = 'account');
 
 select * 
 from emp inner join dept 
@@ -359,12 +397,12 @@ select deptid from dept where dname ='account'
 select * from emp where deptid = (select deptid from dept where dname ='account')
 
 select * from emp 
-where exists 
+where exists
 (select * from dept where dept.deptid = emp.deptid and dname = 'account');
 
 -- write a query to get all emp from account dept;
 select * from emp 
-where deptid in (select deptid from dept where dname = 'account')
+where deptid in (select deptid from dept where dname = 'account');
 
 select * 
 from emp e inner join dept d
