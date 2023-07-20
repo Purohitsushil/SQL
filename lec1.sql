@@ -367,9 +367,36 @@ select * from emp
 where deptid in (select deptid from dept where dname = 'account')
 
 select * 
-from emp inner join dept 
-on emp.deptid = dept.deptid 
-where dept.dname = 'account';
+from emp e inner join dept d
+on e.deptid = d.deptid 
+where d.dname = 'account';
+
+-- write a query  with count of emp in each dept where count is greater then 1
+
+select deptid, count(empid) as countings
+from emp
+group by 1
+having count(empid) >2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
